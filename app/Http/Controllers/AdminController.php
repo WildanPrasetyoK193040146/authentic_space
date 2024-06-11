@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Menu;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
@@ -29,7 +31,10 @@ class AdminController extends Controller
     public function dashboard(){
         $id = Auth::user()->id;
         $adminData = User::find($id);
-        return view('admin.index',compact('adminData'));
+        $menuCounts = Menu::select('category', DB::raw('count(*) as total'))
+                          ->groupBy('category')
+                          ->pluck('total', 'category');
+        return view('admin.index',compact('adminData', 'menuCounts'));
     }
 
     public function profile(){
@@ -232,10 +237,42 @@ class AdminController extends Controller
         }
 
     public function allPesanan(){
-        return view('admin.pesanan.pesanan_all');
+        $allTransaction = Transaction::all();
+        return view('admin.pesanan.pesanan_all', compact('allTransaction'));
     }
 
-    public function detailPesanan(){
-        return view('admin.pesanan.pesanan_detail');
+    public function updateSuccess(Request $request){
+     // Validate the request
+     $request->validate([
+        'transaction_id' => 'required|exists:transactions,id',
+    ]);
+
+    // Find the transaction and update its status
+    $transaction = Transaction::findOrFail($request->transaction_id);
+    $transaction->status = 'success';
+    $transaction->save();
+
+    // Redirect back with a success message
+    return redirect()->back()->with('success', 'Transaction status updated to success.');
+    }
+
+    public function updateReject(Request $request){
+        // Validate the request
+        $request->validate([
+           'transaction_id' => 'required|exists:transactions,id',
+       ]);
+
+       // Find the transaction and update its status
+       $transaction = Transaction::findOrFail($request->transaction_id);
+       $transaction->status = 'reject';
+       $transaction->save();
+
+       // Redirect back with a success message
+       return redirect()->back()->with('success', 'Transaction status updated to reject.');
+       }
+
+    public function detailPesanan($id){
+        $transaction = Transaction::findOrFail($id);
+        return view('admin.pesanan.pesanan_detail', compact('transaction'));
     }
 }

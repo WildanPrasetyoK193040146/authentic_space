@@ -31,7 +31,9 @@ Route::controller(AdminController::class)->group(function(){
         Route::post('/menu/update', 'updateMenu')->name('update.menu');
         Route::get('/menu/delete/{id}', 'deleteMenu')->name('delete.menu');
         Route::get('/pesanan/all', 'allPesanan')->name('all.pesanan');
-        Route::get('/pesanan/detail', 'detailPesanan')->name('detail.pesanan');
+        Route::post('/pesanan/update/status/success', 'updateSuccess')->name('update.success');
+        Route::post('/pesanan/update/status/reject', 'updateReject')->name('update.reject');
+        Route::get('/pesanan/detail/{id}', 'detailPesanan')->name('detail.pesanan');
     });
 });
 
