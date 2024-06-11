@@ -46,11 +46,17 @@ class TransactionController extends Controller
     }
     }
 
-    public function fetch(){
+    public function fetch(Request $request){
         try {
-            $transactions = Transaction::with('transaction_menu.menu')->get();
+            $token = $request->input('token');
+            $transactions = Transaction::query()->with('transaction_menu.menu');
 
-            return ResponseFormatter::success($transactions, 'Data Transaction Found');
+            if($token){
+                $transactions->where('token', 'like', '%' . $token . '%');
+            }
+
+            $transaction = $transactions->get();
+            return ResponseFormatter::success($transaction, 'Data Transaction Found');
         } catch (Exception $e) {
             return ResponseFormatter::error(null, 'Data Transaction Not Found', 500);
         }
