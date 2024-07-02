@@ -226,7 +226,12 @@ class AdminController extends Controller
         $img = $menu->image;
         unlink($img);
 
-        Menu::findOrFail($id)->delete();
+        // Delete related transaction_menu records
+        $menu->transaction_menu()->delete();
+
+        // Delete the menu
+        $menu->delete();
+
 
          $notification = array(
             'message' => 'Menu Deleted Successfully',
