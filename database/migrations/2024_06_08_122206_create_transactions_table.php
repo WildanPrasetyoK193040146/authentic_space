@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('total');
             $table->string('token');
             $table->enum('status', ['reject', 'pending', 'success'])->default('pending');
+            $table->enum('status_pesanan', ['diterima', 'belum diterima'])->default('belum diterima');
             $table->timestamps();
         });
     }

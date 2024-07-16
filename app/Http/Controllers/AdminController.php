@@ -276,6 +276,35 @@ class AdminController extends Controller
        return redirect()->back()->with('success', 'Transaction status updated to reject.');
        }
 
+    public function updateDiterima(Request $request){
+        // Validate the request
+        $request->validate([
+           'transaction_id' => 'required|exists:transactions,id',
+       ]);
+
+       // Find the transaction and update its status
+       $transaction = Transaction::findOrFail($request->transaction_id);
+       $transaction->status_pesanan = 'diterima';
+       $transaction->save();
+
+       // Redirect back with a success message
+       return redirect()->back()->with('success', 'Transaction status updated to diterima.');
+    }
+
+    public function updateBelumDiterima(Request $request){
+        // Validate the request
+        $request->validate([
+           'transaction_id' => 'required|exists:transactions,id',
+       ]);
+
+       // Find the transaction and update its status
+       $transaction = Transaction::findOrFail($request->transaction_id);
+       $transaction->status_pesanan = 'belum diterima';
+       $transaction->save();
+
+       // Redirect back with a success message
+       return redirect()->back()->with('success', 'Transaction status updated to belum diterima.');
+    }
     public function detailPesanan($id){
         $transaction = Transaction::findOrFail($id);
         return view('admin.pesanan.pesanan_detail', compact('transaction'));

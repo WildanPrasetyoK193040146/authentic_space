@@ -16,6 +16,7 @@ class Transaction extends Model
         'quantity',
         'total',
         'status',
+        'status_pesanan',
         'token'
     ];
 

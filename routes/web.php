@@ -33,6 +33,8 @@ Route::controller(AdminController::class)->group(function(){
         Route::get('/pesanan/all', 'allPesanan')->name('all.pesanan');
         Route::post('/pesanan/update/status/success', 'updateSuccess')->name('update.success');
         Route::post('/pesanan/update/status/reject', 'updateReject')->name('update.reject');
+        Route::post('/pesanan/update/status/diterima', 'updateDiterima')->name('update.diterima');
+        Route::post('/pesanan/update/status/belumditerima', 'updateBelumDiterima')->name('update.belumditerima');
         Route::get('/pesanan/detail/{id}', 'detailPesanan')->name('detail.pesanan');
     });
 });

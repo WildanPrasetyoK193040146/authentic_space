@@ -30,6 +30,7 @@ use Carbon\Carbon;
                                 <th>Tanggal Pesanan</th>
                                 <th>Total</th>
                                 <th>No Meja</th>
+                                <th>Status Pembayaran</th>
                                 <th>Status Pesanan</th>
                                 <th>Aksi</th>
                             </tr>
@@ -48,6 +49,7 @@ use Carbon\Carbon;
                                 <td>{{ format_rupiah($item->total) }}</td>
                                 <td>{{ $item->table_number }}</td>
                                 <td>{{ $item->status }}</td>
+                                <td>{{ $item->status_pesanan }}</td>
                                 <td>
                                     @if ($item->status === 'pending')
                                     <form action="{{ route('update.success') }}" method="POST" class="form-update-status" style="display:inline;">
@@ -62,6 +64,13 @@ use Carbon\Carbon;
                                     </form>
                                     <a href="{{ route('detail.pesanan', $item->id) }}" class="btn btn-info sm" title="Detail Data"><i class="fa fa-eye"></i></a>
                                 @elseif ($item->status === 'success')
+                                @if ($item->status_pesanan === 'belum diterima')
+                                <form action="{{ route('update.diterima') }}" method="POST" class="form-update-status" style="display:inline;">
+                                    @csrf
+                                    <input type="hidden" name="transaction_id" value="{{ $item->id }}">
+                                    <button type="submit" class="btn btn-success sm">Diterima</button>
+                                </form>
+                                @endif
                                 <a href="{{ route('detail.pesanan', $item->id) }}" class="btn btn-info sm" title="Detail Data"><i class="fa fa-eye"></i></a>
                                 @elseif ($item->status === 'reject')
                                 <a href="{{ route('detail.pesanan', $item->id) }}" class="btn btn-info sm" title="Detail Data"><i class="fa fa-eye"></i></a>

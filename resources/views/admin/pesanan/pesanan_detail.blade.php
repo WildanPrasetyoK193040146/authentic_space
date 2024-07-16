@@ -61,6 +61,13 @@ use Carbon\Carbon;
                                 </div>
                                 <!-- end row -->
                                 <div class="row mb-3">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label">Status Pesanan</label>
+                                    <div class="col-sm-10">
+                                       <label for="" class="col-sm-2 col-form-label form-control">{{ $transaction->status_pesanan }}</label>
+                                    </div>
+                                </div>
+                                <!-- end row -->
+                                <div class="row mb-3">
                                     <div class="col">
                                         <label for="example-text-input" class="col-sm-2 col-form-label">Menu</label>
                                     </div>
